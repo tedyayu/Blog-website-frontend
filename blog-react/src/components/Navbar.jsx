@@ -15,9 +15,22 @@ const Navbar=({isLoggedIn})=>{
                             <Link className="nav-link" to="/register">Register</Link>
                         </li>
                         {isLoggedIn && (
+                            <>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/create-post">Create Post</Link>
                             </li>
+                            <li className="nav-item">
+                                    <button 
+                                        className="btn btn-danger"
+                                        onClick={() => {
+                                            localStorage.removeItem("authToken");
+                                            window.location.reload();
+                                        }}
+                                    >
+                                        Logout
+                                    </button>
+                                </li>
+                            </>
                         )}
                     </ul>
                 </div>

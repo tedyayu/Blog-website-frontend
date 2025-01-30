@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api";
 
 const Register = () => {
-    const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+    const [formData, setFormData] = useState({ username: "", email: "", password: "",confirmPassword: "" });
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
@@ -13,8 +13,14 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        if (formData.password !== formData.confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
         try {
-            const response = await registerUser(formData);
+            console.log("Sending request:", formData);
+            const response = await registerUser(formData.username, formData.email, formData.password);
+            console.log("API Response:", response);
             if (response.error) {
                 setError(response.error);
             } else {
@@ -35,10 +41,10 @@ const Register = () => {
                     <label>Name</label>
                     <input 
                      type="text" 
-                     name="name" 
+                     name="username" 
                      className="form-control" 
                      placeholder="Enter your name" 
-                     value={formData.name}
+                     value={formData.username}
                      onChange={handleChange}
                      required/>
                 </div>
@@ -62,6 +68,18 @@ const Register = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required />
+                </div>
+                <div className="form-group">
+                    <label>Confirm Password</label>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        className="form-control"
+                        placeholder="Confirm password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
             </form>

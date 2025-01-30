@@ -18,6 +18,7 @@ const Login=({ setAuthToken })=>{
             if (response.error) {
                 setError(response.error);
             } else {
+                localStorage.setItem("authToken", response.token);
                 setAuthToken(response.token); // Save the token
                 alert("Login successful!");
                 navigate("/");
